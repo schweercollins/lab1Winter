@@ -16,12 +16,12 @@ library(tidyverse)
 ```
 
 ```{r load_data}
+<<<<<<< HEAD
 supd <- import(here("data", "rstats_tweets.rds"), 
             setclass = "tbl.df")
 ```
 
 ```{r commit 4}
-
 round_d <- supd %>%
   mutate(month = lubridate::round_date(created_at, "months")) %>% 
   filter(month < lubridate::as_datetime("2019-01-01 00:00:00"))
@@ -35,5 +35,31 @@ bird_plot <- ggplot(tweets, aes(month, n)) +
   geom_line() 
 
 bird_plot
+```
+
+=======
+d <- import(here("data", "rstats_tweets.rds")) %>%
+  theme_minimal(d)
+```
+
+```{r commit2, fig.height = 10, fig.width = 10}
+supd <- d %>% 
+  count(screen_name) %>% 
+  arrange(desc(n)) %>% 
+  dplyr::slice(1:25)
+
+supd <- supd %>% 
+  mutate(screen_name = fct_reorder(screen_name, n))
+
+p1 <- supd %>% 
+  ggplot(aes(x = screen_name, y = n)) +
+  geom_col(fill = "cornflowerblue") +
+  coord_flip() +
+  theme_minimal(base_size = 12) +
+  ggtitle( "Most prolific #rstats tweeters",
+    subtitle = "Top 25 screen names displayed") +
+  ylab("Count") +
+  xlab("Twitter Screen Name")
+p1
 ```
 
