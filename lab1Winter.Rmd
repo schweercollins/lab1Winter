@@ -1,0 +1,19 @@
+---
+title: "Lab 1 Winter 2019"
+author: "Maria Schweer-Collins"
+date: "January 9, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r packages}
+library(rio)
+library(here)
+library(tidyverse)
+````
+
+```{r load_data}
+d <- import(here("data", "rstats_tweets.rds"))
+```
