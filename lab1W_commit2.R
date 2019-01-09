@@ -1,22 +1,12 @@
----
-title: "Lab 1 Winter 2019"
-author: "Maria Schweer-Collins"
-date: "January 9, 2019"
-output: html_document
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-```{r packages}
+* You’ll want to count the number of times a screen name appears and select only the top 25. + Consider arranging in descending order, then using dplyr::slice 
+* Make the screen name a factor, ordered according to the number of times it appears. + Consider forcats::fct_reorder * coord_flip will be your friend here
+
+install.packages(c('here', 'forcats'))
 library(rio)
 library(here)
 library(tidyverse)
-````
-
-```{r load_data}
-d <- import(here("data", "rstats_tweets.rds"))
-```
+library(forcats)
 
 ```{r commit2}
 supd <- import(here("data", "rstats_tweets.rds"))
