@@ -8,12 +8,32 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r packages}
 library(rio)
 library(here)
 library(tidyverse)
-````
+```
 
 ```{r load_data}
-d <- import(here("data", "rstats_tweets.rds"))
+supd <- import(here("data", "rstats_tweets.rds"), 
+            setclass = "tbl.df")
 ```
+
+```{r commit 4}
+
+round_d <- supd %>%
+  mutate(month = lubridate::round_date(created_at, "months")) %>% 
+  filter(month < lubridate::as_datetime("2019-01-01 00:00:00"))
+
+tweets <- round_d %>%
+  count(month)
+tweets
+
+bird_plot <- ggplot(tweets, aes(month, n)) + 
+  geom_smooth() +
+  geom_line() 
+
+bird_plot
+```
+
