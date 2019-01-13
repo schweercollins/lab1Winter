@@ -2,56 +2,40 @@
 title: "Lab 1 Winter 2019"
 author: "Maria Schweer-Collins"
 date: "January 9, 2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r packages}
+```{r packages, warning = FALSE, message = FALSE}
 library(rio)
 library(here)
 library(tidyverse)
 ```
 
-```{r load_data}
-<<<<<<< HEAD
+
+
+```{r load_data, warning = FALSE, message = FALSE}
 supd <- import(here("data", "rstats_tweets.rds"), 
             setclass = "tbl.df")
 ```
 
-```{r commit 4}
-round_d <- supd %>%
-  mutate(month = lubridate::round_date(created_at, "months")) %>% 
-  filter(month < lubridate::as_datetime("2019-01-01 00:00:00"))
+#Vizualization 1
 
-tweets <- round_d %>%
-  count(month)
-tweets
-
-bird_plot <- ggplot(tweets, aes(month, n)) + 
-  geom_smooth() +
-  geom_line() 
-
-bird_plot
-```
-
-=======
-d <- import(here("data", "rstats_tweets.rds")) %>%
-  theme_minimal(d)
-```
-
-```{r commit2, fig.height = 10, fig.width = 10}
-supd <- d %>% 
+```{r commit2, fig.height = 10, fig.width = 10, warning = FALSE, message = FALSE}
+d <- supd %>% 
   count(screen_name) %>% 
   arrange(desc(n)) %>% 
   dplyr::slice(1:25)
 
-supd <- supd %>% 
+d <- d %>% 
   mutate(screen_name = fct_reorder(screen_name, n))
 
-p1 <- supd %>% 
+p1 <- d %>% 
   ggplot(aes(x = screen_name, y = n)) +
   geom_col(fill = "cornflowerblue") +
   coord_flip() +
@@ -60,6 +44,28 @@ p1 <- supd %>%
     subtitle = "Top 25 screen names displayed") +
   ylab("Count") +
   xlab("Twitter Screen Name")
-p1
+p1 + theme_minimal()
 ```
 
+#Vizualization 2
+
+```{r commit 4, fig.height = 10, fig.width = 10, warning = FALSE, message = FALSE}
+round_d <- supd %>%
+  mutate(month = lubridate::round_date(created_at, "months")) %>% 
+  filter(month < lubridate::as_datetime("2019-01-01 00:00:00"))
+
+tweets <- round_d %>%
+  count(month)
+
+bird_plot <- ggplot(tweets, aes(month, n)) + 
+  geom_smooth(color = "magenta", se = FALSE, size = 1.25) +
+  geom_line(color = "gray40", size = 1.25) +
+  geom_area(fill = "cornflowerblue", alpha = .3) +
+  ggtitle( "Growth of the #rstats hashtag on twitter over time") + 
+  labs(caption = "Data from Mike Kearny, distributed via #tidytuesday",
+       y = "Number of #rstats tweets", 
+       x = "Year (data summarized by month)")
+  
+
+bird_plot + theme_minimal(base_size = 15)
+```
